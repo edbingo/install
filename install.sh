@@ -12,6 +12,7 @@ else
 		exit
 	fi
 	
+	# Make install folders
 	mkdir /install
 	cd /install
 	
@@ -39,19 +40,24 @@ else
 	usermod -a -G rvm new-tool
 	usermod -aG rvm $SUDO_USER
 	
+	# Change to install directory and download latest version
 	cd /var/www/
 	git clone https://github.com/edbingo/new-tool
 	
+	# Give user permission to R/W install folder
 	chown new-tool:new-tool -R new-tool/
 	chown $SUDO_USER:$SUDO_USER -R /install
 	
+	# Required steps for passenger
 	if [ ! -f /etc/nginx/modules-enabled/50-mod-http-passenger.conf ]
 	then
 		ln -s /usr/share/nginx/modules-available/mod-http-passenger.load /etc/nginx/modules-enabled/50-mod-http-passenger.conf ;
 	fi
+	
+	# Download config for nginx, and remove default settings
 	ls /etc/nginx/conf.d/mod-http-passenger.conf
 	cd /etc/nginx/sites-enabled/
-	mv default default.bak
+	rm default
 	wget https://raw.githubusercontent.com/edbingo/install/main/athene.bks-campus.ch
 	cp athene.bks-campus.ch /etc/nginx/sites-available/
 	systemctl restart nginx
@@ -63,6 +69,7 @@ else
 	exit
 fi
 
+# Check that not root
 if [ "$EUID" -ne 0 ]
 then
 	echo "proceeding..."
@@ -71,12 +78,14 @@ else
 	exit
 fi
 
+# Change to install directory
 cd /install
 
 if [[ -f checkpoint1 ]]
 then
 	echo "Please Wait"
 else
+	# Install ruby-2.6.0 system wide and set as default ruby
 	source /usr/share/rvm/scripts/rvm
 	cd /install
 	rvm install ruby-2.6.0
@@ -93,12 +102,13 @@ then
 	echo "Please run as user new-tool (sudo su new-tool)"
 	exit
 else
+	# Initiates databases and precompiles assets for new-tool
 	source /usr/share/rvm/scripts/rvm
 	rvm install ruby-2.6.0
 	cd /var/www/new-tool
 	bundle install --deployment --without development test
 	bundle exec rake assets:precompile db:migrate db:seed RAILS_ENV=production
-	echo "Install complete?"
+	echo "Install complete!"
 fi
 	
 

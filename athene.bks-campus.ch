@@ -6,3 +6,4 @@ server {
 	
 	passenger_enabled on;
 	passenger_ruby /usr/share/rvm/gems/ruby-2.6.0/wrappers/ruby
+}

@@ -97,7 +97,7 @@ else
 	rvm install ruby-2.6.0
 	cd /var/www/new-tool
 	bundle install --deployment --without development test
-	bundle exec rake assets:precompile db:migrate RAILS_ENV=production
+	bundle exec rake assets:precompile db:migrate db:seed RAILS_ENV=production
 	echo "Install complete?"
 fi
 	

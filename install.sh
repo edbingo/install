@@ -1,5 +1,7 @@
 #!/bin/bash
 
+cd /install
+
 if [[ -f checkpoint0 ]]
 then
 	echo "skipping..."

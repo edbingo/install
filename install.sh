@@ -48,6 +48,10 @@ else
 		ln -s /usr/share/nginx/modules-available/mod-http-passenger.load /etc/nginx/modules-enabled/50-mod-http-passenger.conf ;
 	fi
 	ls /etc/nginx/conf.d/mod-http-passenger.conf
+	cd /etc/nginx/sites-enabled/
+	mv default default.bak
+	wget https://raw.githubusercontent.com/edbingo/install/main/athene.bks-campus.ch
+	cp athene.bks-campus.ch /etc/nginx/sites-available/
 	systemctl restart nginx
 	
 	# Set checkpoint and reboot
@@ -92,6 +96,7 @@ else
 	cd /var/www/new-tool
 	bundle install --deployment --without development test
 	bundle exec rake assets:precompile db:migrate RAILS_ENV=production
+	echo "Install complete?"
 fi
 	
 

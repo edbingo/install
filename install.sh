@@ -71,8 +71,10 @@ if [[ -f checkpoint1 ]]
 then
 	echo "Please Wait"
 else
+	source /usr/share/rvm/scripts/rvm
 	cd /install
 	rvm install ruby-2.6.0
+	rvm use --default ruby-2.6.0
 	touch checkpoint1
 	echo "Please run this script again as newly created user new-tool (sudo su new-tool)"
 	exit

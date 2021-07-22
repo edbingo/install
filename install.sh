@@ -106,6 +106,7 @@ else
 	source /usr/share/rvm/scripts/rvm
 	rvm install ruby-2.6.0
 	cd /var/www/new-tool
+	git pull
 	bundle install --deployment --without development test
 	bundle exec rake assets:precompile db:migrate db:seed RAILS_ENV=production
 	echo "Install complete!"
